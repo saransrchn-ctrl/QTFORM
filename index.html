@@ -265,7 +265,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyiscRibPV5mIPnea9L2wBNhuUIJfRcZtolTb6hGuUYMzHBchAatjFJxkLJqWsWQGp/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqdhOnfCHQWbA4EQ4K2x3E94O9et6wzSDhTRcq913hZOmSDO9AcUtGKdi9xqloWecW/exec';
 
 const STEEL_TYPES = ['-- เลือกประเภท --','เหล็กกล่อง (Square/Rect Tube)','เหล็กกลม (Round Bar/Pipe)','เหล็กแผ่น (Flat Bar/Sheet)','เหล็กฉาก (Angle Bar)','เหล็กรูปพรรณ (Structural)','อื่นๆ'];
 const BEND_TYPES = ['-- เลือกรูปแบบ --','ดัดโค้ง (Bending)','ดัดมุม (Angle Bending)','ดัดวงกลม/วงรี (Rolling)','ดัดเกลียว / Spiral','ดัดอิสระตามแบบ (Custom)'];
@@ -366,22 +366,31 @@ function submitForm() {
 
   function sendData(extraData) {
     var payload = Object.assign({}, data, extraData);
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(function() {
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = SCRIPT_URL;
+    form.target = 'hidden-iframe';
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'data';
+    input.value = JSON.stringify(payload);
+    form.appendChild(input);
+    document.body.appendChild(form);
+    var iframe = document.getElementById('hidden-iframe');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.name = 'hidden-iframe';
+      iframe.id = 'hidden-iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+    iframe.onload = function() {
       btn.textContent = 'สำเร็จ!';
       btn.style.background = 'var(--green)';
       alert('ส่งข้อมูลเรียบร้อยแล้วครับ! ทีมงานจะติดต่อกลับภายใน 1-2 วันทำการครับ');
-    })
-    .catch(function() {
-      btn.disabled = false;
-      btn.textContent = 'ส่งข้อมูล';
-      alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้งครับ');
-    });
+      document.body.removeChild(form);
+    };
+    form.submit();
   }
 
   var fileInput = document.getElementById('file-upload');
