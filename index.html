@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>แบบฟอร์มขอใบเสนอราคา — นิวแพลน เอ็นจิเนียริ่ง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --steel: #1a2332;
+    --steel-mid: #2d3f55;
+    --steel-light: #4a6080;
+    --accent: #1a56a8;
+    --accent-light: #2e74d4;
+    --surface: #f7f8fa;
+    --surface-2: #edf0f4;
+    --border: #d0d8e4;
+    --text: #1a2332;
+    --text-muted: #5a6a80;
+    --white: #ffffff;
+    --red: #c0392b;
+    --green: #27ae60;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun', 'IBM Plex Sans Thai', sans-serif; background: var(--surface); color: var(--text); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+  .header { background: var(--steel); color: var(--white); padding: 0; }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 1.75rem 2rem; }
+  .header-flex { display: flex; align-items: center; gap: 1.5rem; }
+  .header-logo { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; background: white; border-radius: var(--radius); padding: 6px; }
+  .header-info { flex: 1; }
+  .company-name-th { font-size: 15px; color: rgba(255,255,255,0.75); font-weight: 400; margin-bottom: 2px; }
+  .company-name-en { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+  .doc-title { font-size: 22px; font-weight: 600; color: white; letter-spacing: -0.01em; }
+  .header-meta { display: flex; align-items: center; gap: 1.5rem; flex-shrink: 0; text-align: right; }
+  .meta-item label { display: block; font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .meta-item input { font-family: inherit; font-size: 13px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; padding: 6px 10px; width: 140px; }
+  .meta-item input::placeholder { color: rgba(255,255,255,0.35); }
+  .header-strip { height: 4px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 60%, transparent 100%); }
+
+  .main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  .section { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1.25rem; overflow: hidden; }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--surface-2); background: var(--surface); }
+  .section-num { width: 26px; height: 26px; background: var(--steel); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .section-title { font-size: 13px; font-weight: 600; color: var(--steel); letter-spacing: 0.04em; text-transform: uppercase; }
+  .section-body { padding: 1.25rem 1.5rem; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .col-span-2 { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .req { color: var(--red); margin-left: 2px; }
+
+  input[type="text"], input[type="email"], input[type="number"], input[type="date"], select, textarea {
+    font-family: inherit; font-size: 14px; color: var(--text);
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 8px 11px; width: 100%;
+    transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+    appearance: none; -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,86,168,0.1); }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a6a80' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px; }
+  textarea { resize: vertical; min-height: 70px; line-height: 1.6; }
+
+  /* Items table */
+  .items-wrapper { overflow-x: auto; }
+  table.items-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 700px; }
+  table.items-table th { background: var(--surface); color: var(--text-muted); font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+  table.items-table td { padding: 6px 6px; border-bottom: 1px solid var(--surface-2); vertical-align: middle; }
+  table.items-table td input, table.items-table td select { padding: 6px 8px; font-size: 13px; border-radius: 6px; }
+  table.items-table td select { padding-right: 28px; }
+  .td-no { width: 36px; text-align: center; color: var(--text-muted); font-weight: 600; }
+  .td-del { width: 36px; text-align: center; }
+  .btn-del { background: none; border: none; cursor: pointer; color: #c0392b; font-size: 16px; padding: 4px 8px; border-radius: 4px; line-height: 1; }
+  .btn-del:hover { background: #fdf0ee; }
+  .btn-add-row { margin-top: 10px; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--accent); background: #eef3fb; border: 1px dashed var(--accent); border-radius: var(--radius); padding: 8px 18px; cursor: pointer; transition: all 0.15s; }
+  .btn-add-row:hover { background: #dce8f7; }
+
+  .check-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius); transition: background 0.15s, border-color 0.15s; user-select: none; }
+  .check-item:hover { background: var(--surface); border-color: var(--accent); }
+  .check-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+
+  .info-box { background: #eef3fb; border: 1px solid #b8d0ee; border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 9px 13px; font-size: 13px; color: #1a3f6f; margin-bottom: 1rem; }
+
+  .form-footer { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .footer-note { font-size: 13px; color: var(--text-muted); }
+  .footer-note span { color: var(--red); }
+  .btn-group { display: flex; gap: 10px; }
+  .btn { font-family: inherit; font-size: 14px; font-weight: 500; padding: 9px 20px; border-radius: var(--radius); cursor: pointer; border: none; transition: all 0.15s; }
+  .btn-outline { background: var(--white); color: var(--steel); border: 1px solid var(--border); }
+  .btn-outline:hover { background: var(--surface); }
+  .btn-primary { background: var(--steel); color: white; }
+  .btn-primary:hover { background: var(--steel-mid); }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { background: var(--accent-light); }
+
+  @media print {
+    body { background: white; font-size: 13px; }
+    .header { background: #1a2332 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .btn-group, .btn-add-row, .btn-del, .no-print { display: none !important; }
+    .section { break-inside: avoid; }
+    .main { padding: 0; }
+  }
+  @media (max-width: 640px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .col-span-2 { grid-column: auto; }
+    .header-flex { flex-direction: column; align-items: flex-start; }
+    .header-meta { width: 100%; justify-content: flex-start; }
+    .check-group { grid-template-columns: 1fr; }
+    .form-footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-flex">
+      <img class="header-logo" src="data:image/jpeg;base64,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" alt="New Plan Logo" />
+      <div class="header-info">
+        <div class="company-name-th">บริษัท นิวแพลน เอ็นจิเนียริ่ง จำกัด</div>
+        <div class="company-name-en">NEWPLAN ENGINEERING CO.,LTD.</div>
+        <div class="doc-title">แบบฟอร์มขอใบเสนอราคา — งานดัดเหล็ก</div>
+      </div>
+      <div class="header-meta">
+        <div class="meta-item">
+          <label>วันที่ขอใบเสนอราคา</label>
+          <input type="date" id="hdr-quote-date" />
+        </div>
+        <div class="meta-item">
+          <label>เลขที่อ้างอิง</label>
+          <input type="text" id="hdr-ref" placeholder="NP-0001" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="header-strip"></div>
+</div>
+
+<div class="main">
+
+  <!-- Section 1: ข้อมูลลูกค้า -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><div class="section-title">ข้อมูลลูกค้า</div></div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field"><label>ชื่อ-นามสกุล / ชื่อบริษัท <span class="req">*</span></label><input type="text" placeholder="กรอกชื่อ-นามสกุล หรือชื่อบริษัท" /></div>
+        <div class="field"><label>เลขทะเบียนนิติบุคคล (ถ้ามี)</label><input type="text" placeholder="0000000000000" maxlength="13" /></div>
+        <div class="field"><label>เบอร์โทรศัพท์ <span class="req">*</span></label><input type="text" placeholder="08X-XXX-XXXX" /></div>
+        <div class="field"><label>อีเมล</label><input type="email" placeholder="example@email.com" /></div>
+        <div class="field"><label>Line ID / ช่องทางติดต่ออื่น</label><input type="text" placeholder="@lineid หรือ Facebook..." /></div>
+        <div class="field"><label>ประเภทลูกค้า</label>
+          <select><option>บุคคลทั่วไป</option><option>ผู้รับเหมา / ช่าง</option><option>โรงงาน / บริษัท</option><option>ผู้จัดจำหน่าย</option></select>
+        </div>
+        <div class="field col-span-2"><label>ที่อยู่ / สถานที่จัดส่ง <span class="req">*</span></label><textarea placeholder="บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์..."></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: รายการวัสดุ (dynamic rows) -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div class="section-title">รายการวัสดุ & รายละเอียดการดัด</div></div>
+    <div class="section-body">
+      <div class="items-wrapper">
+        <table class="items-table" id="items-table">
+          <thead>
+            <tr>
+              <th class="td-no">#</th>
+              <th style="min-width:130px;">ประเภทเหล็ก</th>
+              <th style="min-width:90px;">เกรด</th>
+              <th style="min-width:110px;">ขนาดหน้าตัด (มม.)</th>
+              <th style="min-width:90px;">ความยาว (มม.)</th>
+              <th style="min-width:65px;">จำนวน (ชิ้น)</th>
+              <th style="min-width:110px;">รูปแบบการดัด</th>
+              <th style="min-width:100px;">มุม / รัศมี (R)</th>
+              <th style="min-width:70px;">จุดดัด/ชิ้น</th>
+              <th style="min-width:80px;">หมายเหตุ</th>
+              <th class="td-del no-print"></th>
+            </tr>
+          </thead>
+          <tbody id="items-body"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row no-print" onclick="addRow()">+ เพิ่มรายการ</button>
+    </div>
+  </div>
+
+  <!-- Section 3: งานเพิ่มเติม -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><div class="section-title">งานเพิ่มเติม</div></div>
+    <div class="section-body">
+      <label style="display:block; margin-bottom:10px; font-size:13px; font-weight:500; color:var(--text-muted);">เลือกงานที่ต้องการเพิ่มเติม (เลือกได้หลายรายการ)</label>
+      <div class="check-group">
+        <label class="check-item"><input type="checkbox" /> เชื่อมต่อชิ้นงาน (Welding)</label>
+        <label class="check-item"><input type="checkbox" /> ตัด (Cutting)</label>
+        <label class="check-item"><input type="checkbox" /> เจาะรู (Drilling)</label>
+        <label class="check-item"><input type="checkbox" /> กัด / กลึง (Machining)</label>
+        <label class="check-item"><input type="checkbox" /> พ่นสี / เคลือบผิว</label>
+        <label class="check-item"><input type="checkbox" /> ชุบสังกะสี (Galvanize)</label>
+        <label class="check-item"><input type="checkbox" /> ขัดผิว (Polishing)</label>
+        <label class="check-item"><input type="checkbox" /> อื่นๆ (ระบุในหมายเหตุ)</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: การจัดส่ง -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div class="section-title">การจัดส่ง & กำหนดเวลา</div></div>
+    <div class="section-body">
+      <div class="grid-3">
+        <div class="field"><label>วิธีรับงาน <span class="req">*</span></label>
+          <select><option>รับเองที่ร้าน</option><option>จัดส่ง (คิดค่าขนส่งเพิ่ม)</option></select>
+        </div>
+        <div class="field"><label>วันที่ต้องการรับงาน <span class="req">*</span></label><input type="date" id="delivery-date" /></div>
+        <div class="field"><label>ความเร่งด่วน</label>
+          <select><option>ปกติ</option><option>เร่งด่วน (ยอมรับค่าใช้จ่ายเพิ่ม)</option><option>ยืดหยุ่นได้</option></select>
+        </div>
+        <div class="field"><label>งบประมาณโดยประมาณ (บาท)</label><input type="text" placeholder="เช่น 5,000 – 10,000" /></div>
+        <div class="field"><label>วิธีชำระเงิน</label>
+          <select><option>เงินสด</option><option>โอนธนาคาร</option><option>เครดิต 30 วัน</option><option>อื่นๆ</option></select>
+        </div>
+        <div class="field"><label>ต้องการใบกำกับภาษี?</label>
+          <select><option>ไม่ต้องการ</option><option>ต้องการใบกำกับภาษีเต็มรูปแบบ</option><option>ใบเสร็จรับเงินทั่วไป</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: หมายเหตุ -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">หมายเหตุ / รายละเอียดเพิ่มเติม</div></div>
+    <div class="section-body">
+      <div class="info-box">💡 หากมีแบบ Drawing กรุณาแนบไฟล์ .pdf .dwg .jpg มาพร้อมกับแบบฟอร์มนี้ จะช่วยให้เสนอราคาได้แม่นยำขึ้น</div>
+      <div class="field"><label>รายละเอียดพิเศษ / ข้อกำหนดเฉพาะ</label><textarea style="min-height:90px;" placeholder="ระบุรายละเอียดอื่นๆ..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="form-footer">
+    <div class="footer-note"><span>*</span> จำเป็นต้องกรอก</div>
+    <div class="btn-group no-print">
+      <button class="btn btn-outline" onclick="window.print()">🖨️ พิมพ์ / Save PDF</button>
+      <button class="btn btn-outline" onclick="clearForm()">ล้างข้อมูล</button>
+      <button class="btn btn-accent" id="submit-btn" onclick="submitForm()">ส่งข้อมูล ✓</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby5QadIdlpanRqxf7MsAq94uXcldtbf7PrsuRMUfRonksDRkj9IXwGaDFcZkSFI6iZUhw/exec';
+
+const STEEL_TYPES = ['-- เลือกประเภท --','เหล็กกล่อง (Square/Rect Tube)','เหล็กกลม (Round Bar/Pipe)','เหล็กแผ่น (Flat Bar/Sheet)','เหล็กฉาก (Angle Bar)','เหล็กรูปพรรณ (Structural)','สเตนเลส (Stainless Steel)','อะลูมิเนียม (Aluminium)','อื่นๆ'];
+const BEND_TYPES = ['-- เลือกรูปแบบ --','ดัดโค้ง (Bending)','ดัดมุม (Angle Bending)','ดัดวงกลม/วงรี (Rolling)','ดัดเกลียว / Spiral','ดัดอิสระตามแบบ (Custom)'];
+
+function makeSelect(opts) {
+  return '<select>' + opts.map(o => '<option>' + o + '</option>').join('') + '</select>';
+}
+
+let rowCount = 0;
+function addRow() {
+  rowCount++;
+  const tbody = document.getElementById('items-body');
+  const tr = document.createElement('tr');
+  tr.id = 'row-' + rowCount;
+  tr.innerHTML = `
+    <td class="td-no">${rowCount}</td>
+    <td>${makeSelect(STEEL_TYPES)}</td>
+    <td><input type="text" placeholder="SS400, 304..." /></td>
+    <td><input type="text" placeholder="50×50×2, Ø25..." /></td>
+    <td><input type="text" placeholder="6000" /></td>
+    <td><input type="number" placeholder="1" min="1" style="width:70px;" /></td>
+    <td>${makeSelect(BEND_TYPES)}</td>
+    <td><input type="text" placeholder="90°, R=200" /></td>
+    <td><input type="number" placeholder="1" min="1" style="width:60px;" /></td>
+    <td><input type="text" placeholder="หมายเหตุ..." /></td>
+    <td class="td-del no-print"><button class="btn-del" onclick="delRow('row-${rowCount}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function delRow(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+  // Re-number
+  const rows = document.querySelectorAll('#items-body tr');
+  rows.forEach((r, i) => { r.querySelector('.td-no').textContent = i + 1; });
+}
+
+function clearForm() {
+  if (confirm('ต้องการล้างข้อมูลทั้งหมดใช่ไหม?')) {
+    document.querySelectorAll('input:not([type="checkbox"]), textarea').forEach(el => el.value = '');
+    document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+    document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+    document.getElementById('items-body').innerHTML = '';
+    rowCount = 0;
+    addRow();
+  }
+}
+
+function getLabel(el) {
+  const field = el.closest('.field');
+  if (field) { const l = field.querySelector('label'); if (l) return l.innerText.replace('*','').trim(); }
+  return el.placeholder || 'ไม่ระบุ';
+}
+
+function submitForm() {
+  const rows = document.querySelectorAll('#items-body tr');
+  if (rows.length === 0) { alert('⚠️ กรุณาเพิ่มรายการอย่างน้อย 1 รายการครับ'); return; }
+
+  const data = {
+    วันที่ส่ง: new Date().toLocaleString('th-TH'),
+    วันที่ขอใบเสนอราคา: document.getElementById('hdr-quote-date').value,
+    เลขที่อ้างอิง: document.getElementById('hdr-ref').value,
+  };
+
+  document.querySelectorAll('.section-body input:not([type="checkbox"]):not(#items-table *):not(#hdr-quote-date):not(#hdr-ref), .section-body select:not(#items-table *), .section-body textarea').forEach(el => {
+    const key = getLabel(el);
+    if (key) data[key] = el.value;
+  });
+
+  const checked = [];
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    if (el.checked) { const l = el.closest('label'); if (l) checked.push(l.innerText.trim()); }
+  });
+  data['งานเพิ่มเติม'] = checked.join(', ') || 'ไม่มี';
+
+  const items = [];
+  rows.forEach((r, i) => {
+    const cells = r.querySelectorAll('td');
+    items.push({
+      ลำดับ: i + 1,
+      ประเภทเหล็ก: cells[1].querySelector('select').value,
+      เกรด: cells[2].querySelector('input').value,
+      ขนาดหน้าตัด: cells[3].querySelector('input').value,
+      ความยาว: cells[4].querySelector('input').value,
+      จำนวน: cells[5].querySelector('input').value,
+      รูปแบบการดัด: cells[6].querySelector('select').value,
+      มุมรัศมี: cells[7].querySelector('input').value,
+      จุดดัด: cells[8].querySelector('input').value,
+      หมายเหตุรายการ: cells[9].querySelector('input').value,
+    });
+  });
+  data['รายการวัสดุ'] = JSON.stringify(items);
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+
+  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) })
+    .then(() => {
+      btn.textContent = '✅ ส่งสำเร็จ!';
+      btn.style.background = 'var(--green)';
+      alert('✅ ส่งข้อมูลเรียบร้อยแล้วครับ!\n\nทีมงานจะติดต่อกลับภายใน 1-2 วันทำการครับ');
+    })
+    .catch(() => {
+      btn.disabled = false; btn.textContent = 'ส่งข้อมูล ✓';
+      alert('❌ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้งครับ');
+    });
+}
+
+// Init
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('hdr-quote-date').value = today;
+document.getElementById('delivery-date').min = today;
+addRow();
+</script>
+</body>
+</html>
