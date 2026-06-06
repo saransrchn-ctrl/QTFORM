@@ -127,6 +127,7 @@
         <div class="company-name-th">บริษัท นิวแพลน เอ็นจิเนียริ่ง จำกัด</div>
         <div class="company-name-en">NEWPLAN ENGINEERING CO.,LTD.</div>
         <div class="doc-title">แบบฟอร์มขอใบเสนอราคา — งานดัดเหล็ก</div>
+        <div style="margin-top:6px; font-size:12px; color:rgba(255,255,255,0.55); line-height:1.6;">📍 116/112 Bo Win, Si Racha District, Chon Buri 20230 &nbsp;|&nbsp; 📞 038 337 544</div>
       </div>
       <div class="header-meta">
         <div class="meta-item">
@@ -138,6 +139,12 @@
           <input type="text" id="hdr-ref" placeholder="NP-0001" />
         </div>
       </div>
+    </div>
+  </div>
+  <div style="background:#243447; padding: 8px 2rem;">
+    <div style="max-width:900px; margin:0 auto; display:flex; align-items:center; gap:2rem; flex-wrap:wrap;">
+      <span style="font-size:12px; color:rgba(255,255,255,0.55);">📍 116/112 Bo Win, Si Racha District, Chon Buri 20230</span>
+      <span style="font-size:12px; color:rgba(255,255,255,0.55);">📞 <a href="tel:038337544" style="color:rgba(255,255,255,0.7); text-decoration:none;">038 337 544</a></span>
     </div>
   </div>
   <div class="header-strip"></div>
@@ -232,6 +239,19 @@
     </div>
   </div>
 
+  <!-- Section 5: แนบไฟล์แบบ -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div class="section-title">แนบไฟล์แบบ / Drawing</div></div>
+    <div class="section-body">
+      <div class="info-box">💡 รองรับไฟล์ .pdf .dwg .jpg .png ขนาดไม่เกิน 10MB</div>
+      <div class="field">
+        <label>เลือกไฟล์แบบ</label>
+        <input type="file" id="file-upload" accept=".pdf,.dwg,.jpg,.jpeg,.png" style="padding:8px; border:1px dashed var(--border); border-radius:var(--radius); background:var(--surface); cursor:pointer;" />
+        <div id="file-name" style="font-size:12px; color:var(--text-muted); margin-top:4px;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <div class="form-footer">
     <div class="footer-note"><span>*</span> จำเป็นต้องกรอก</div>
@@ -245,7 +265,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPkVII3pzoixkMjQ-m5iF9oqeYGrKd_zP_CNS6CJHe8pxgmdWT_dxTXNzuXT0Q3SWR/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxm9n-vB98bUZuh3KHixf7OMfUoZcqZ_r2DF7g5FkHcpwArNLsxuH8_k35G_Y4zX3CR/exec';
 
 const STEEL_TYPES = ['-- เลือกประเภท --','เหล็กกล่อง (Square/Rect Tube)','เหล็กกลม (Round Bar/Pipe)','เหล็กแผ่น (Flat Bar/Sheet)','เหล็กฉาก (Angle Bar)','เหล็กรูปพรรณ (Structural)','สเตนเลส (Stainless Steel)','อะลูมิเนียม (Aluminium)','อื่นๆ'];
 const BEND_TYPES = ['-- เลือกรูปแบบ --','ดัดโค้ง (Bending)','ดัดมุม (Angle Bending)','ดัดวงกลม/วงรี (Rolling)','ดัดเกลียว / Spiral','ดัดอิสระตามแบบ (Custom)'];
@@ -343,7 +363,13 @@ function submitForm() {
   const btn = document.getElementById('submit-btn');
   btn.disabled = true; btn.textContent = 'กำลังส่ง...';
 
-  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) })
+  // Handle file upload
+  const fileInput = document.getElementById('file-upload');
+  const file = fileInput.files[0];
+
+  function sendData(extraData) {
+    const payload = Object.assign({}, data, extraData);
+    fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) })
     .then(() => {
       btn.textContent = '✅ ส่งสำเร็จ!';
       btn.style.background = 'var(--green)';
